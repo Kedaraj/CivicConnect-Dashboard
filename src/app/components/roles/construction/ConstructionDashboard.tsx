@@ -64,7 +64,7 @@ export function ConstructionDashboard() {
   useEffect(() => { fetch_(); }, []);
 
   useEffect(() => {
-    const s = socketIO('http://localhost:3001');
+    const s = socketIO('https://civicconnect-backend-nuz1.onrender.com');
     s.on('connect', () => s.emit('join-role','construction'));
     s.on('incident-update', (d:any) => {
       if (d?.type==='new' && d?.incident) {
@@ -79,7 +79,7 @@ export function ConstructionDashboard() {
   }, []);
 
   const resolve = async (id:string) => {
-    try { await fetch(`http://localhost:3001/api/incidents/${id}`, { method:'PUT', headers:{'Content-Type':'application/json',...(localStorage.getItem('cc_token')?{Authorization:`Bearer ${localStorage.getItem('cc_token')}`}:{})}, body:JSON.stringify({status:'resolved'}) }); toast.success('✅ Issue resolved!'); fetch_(); } catch { toast.error('Failed'); }
+    try { await fetch(`https://civicconnect-backend-nuz1.onrender.com/api/incidents/${id}`, { method:'PUT', headers:{'Content-Type':'application/json',...(localStorage.getItem('cc_token')?{Authorization:`Bearer ${localStorage.getItem('cc_token')}`}:{})}, body:JSON.stringify({status:'resolved'}) }); toast.success('✅ Issue resolved!'); fetch_(); } catch { toast.error('Failed'); }
   };
 
   const addZone = () => {

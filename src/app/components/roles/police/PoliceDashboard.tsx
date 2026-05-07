@@ -264,7 +264,7 @@ export function PoliceDashboard() {
 
   // Socket.IO: real-time alerts
   useEffect(() => {
-    const socket = socketIO('http://localhost:3001');
+    const socket = socketIO('https://civicconnect-backend-nuz1.onrender.com');
     socket.on('connect', () => {
       socket.emit('join-role', 'police');
     });
@@ -291,7 +291,7 @@ export function PoliceDashboard() {
 
   const handleResolve = async (id: string) => {
     try {
-      const res = await fetch(`http://localhost:3001/api/incidents/${id}`, {
+      const res = await fetch(`https://civicconnect-backend-nuz1.onrender.com/api/incidents/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

@@ -54,14 +54,14 @@ export function AdminDashboard() {
   useEffect(() => { fetchAll(); }, []);
 
   useEffect(() => {
-    const s = socketIO('http://localhost:3001');
+    const s = socketIO('https://civicconnect-backend-nuz1.onrender.com');
     s.on('connect', () => s.emit('join-role','admin'));
     s.on('incident-update', (d:any) => { if(d?.type==='new'&&d?.incident){ playAlert(); setAlertData(d.incident); setShowBanner(true); fetchAll(); toast.error(`🚨 ${d.incident.title||d.incident.type}\n📍 ${d.incident.location?.address||''}`,{duration:6000}); setTimeout(()=>setShowBanner(false),15000); } });
     return () => { s.disconnect(); };
   }, []);
 
-  const resolve = async (id:string) => { try { await fetch(`http://localhost:3001/api/incidents/${id}`,{method:'PUT',headers:authHeaders(),body:JSON.stringify({status:'resolved'})}); toast.success('✅ Resolved!'); fetchAll(); } catch{toast.error('Failed');} };
-  const deleteInc = async (id:string) => { try { await fetch(`http://localhost:3001/api/incidents/${id}`,{method:'DELETE',headers:authHeaders()}); toast.success('🗑️ Deleted'); fetchAll(); } catch{toast.error('Failed');} };
+  const resolve = async (id:string) => { try { await fetch(`https://civicconnect-backend-nuz1.onrender.com/api/incidents/${id}`,{method:'PUT',headers:authHeaders(),body:JSON.stringify({status:'resolved'})}); toast.success('✅ Resolved!'); fetchAll(); } catch{toast.error('Failed');} };
+  const deleteInc = async (id:string) => { try { await fetch(`https://civicconnect-backend-nuz1.onrender.com/api/incidents/${id}`,{method:'DELETE',headers:authHeaders()}); toast.success('🗑️ Deleted'); fetchAll(); } catch{toast.error('Failed');} };
 
   const open=incidents.filter(i=>i.status==='open'||i.status==='active').length;
   const prog=incidents.filter(i=>i.status==='in_progress').length;

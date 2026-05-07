@@ -83,7 +83,7 @@ export function AmbulanceDashboard() {
 
   // Socket.IO real-time alerts
   useEffect(() => {
-    const socket = socketIO('http://localhost:3001');
+    const socket = socketIO('https://civicconnect-backend-nuz1.onrender.com');
     socket.on('connect', () => socket.emit('join-role', 'ambulance'));
     socket.on('incident-update', (data: any) => {
       if (data?.type === 'new' && data?.incident) {
@@ -100,7 +100,7 @@ export function AmbulanceDashboard() {
 
   const handleAccept = async (id: string) => {
     try {
-      await fetch(`http://localhost:3001/api/incidents/${id}`, {
+      await fetch(`https://civicconnect-backend-nuz1.onrender.com/api/incidents/${id}`, {
         method: 'PUT', headers: { 'Content-Type': 'application/json', ...(localStorage.getItem('cc_token') ? { Authorization: `Bearer ${localStorage.getItem('cc_token')}` } : {}) },
         body: JSON.stringify({ status: 'in_progress', assignedTo: user?._id }),
       });

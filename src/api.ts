@@ -1,5 +1,5 @@
 // ─── CivicConnect API Service (Admin/Roles App) ──────────────────────────────
-const API_BASE = "http://localhost:3001/api";
+const API_BASE = "https://civicconnect-backend-nuz1.onrender.com/api";
 
 class ApiService {
   private token: string | null = localStorage.getItem("cc_token");
