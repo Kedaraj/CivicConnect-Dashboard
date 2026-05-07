@@ -1,0 +1,52 @@
+
+  <!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+      <title>RoadSense AI — Command Dashboard</title>
+      <meta name="description" content="RoadSense AI Dashboard for Police, Ambulance, Construction, and City Admin" />
+
+      <!-- PWA -->
+      <link rel="manifest" href="/manifest.json" />
+      <meta name="theme-color" content="#111111" />
+      <meta name="apple-mobile-web-app-capable" content="yes" />
+      <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+      <meta name="apple-mobile-web-app-title" content="RoadSense Dashboard" />
+      <link rel="apple-touch-icon" href="/icons/icon-192.svg" />
+      <link rel="icon" type="image/svg+xml" href="/icons/icon-192.svg" />
+
+      <style>
+        html, body { 
+          height: 100%; 
+          margin: 0; 
+          background: white;
+        } 
+        #root { 
+          height: 100vh;
+          width: 100%;
+          max-width: 512px;
+          margin: 0 auto;
+          overflow: hidden;
+          background: white;
+          display: flex;
+          flex-direction: column;
+          position: relative;
+        }
+      </style>
+    </head>
+
+    <body>
+      <div id="root"></div>
+      <script type="module" src="/src/main.tsx"></script>
+      <script>
+        if ('serviceWorker' in navigator) {
+          window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/sw.js')
+              .then(reg => console.log('[RoadSense] SW registered:', reg.scope))
+              .catch(err => console.log('[RoadSense] SW failed:', err));
+          });
+        }
+      </script>
+    </body>
+  </html>
