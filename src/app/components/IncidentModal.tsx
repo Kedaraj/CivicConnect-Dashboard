@@ -1,6 +1,7 @@
 import { X, MapPin, Clock, User, Camera, MessageSquare, Navigation, ExternalLink } from 'lucide-react';
 import { motion } from 'motion/react';
 import { useState } from 'react';
+import { EvidenceViewer } from './EvidenceViewer';
 
 interface IncidentModalProps {
   incident: {
@@ -14,6 +15,7 @@ interface IncidentModalProps {
     lat?: number;
     lng?: number;
     description?: string;
+    evidence?: {url: string; type: string}[];
   };
   onClose: () => void;
   onAssign: (unitId: string) => void;
@@ -116,6 +118,13 @@ export function IncidentModal({ incident, onClose, onAssign, onResolve }: Incide
               )}
             </div>
           </div>
+
+          {/* Evidence Section */}
+          {incident.evidence && incident.evidence.length > 0 && (
+            <div className="bg-gray-50 rounded-2xl p-4">
+              <EvidenceViewer evidence={incident.evidence} />
+            </div>
+          )}
 
           {/* Get Direction Button */}
           {incident.lat && incident.lng && (

@@ -1,16 +1,17 @@
 import { MapPin, Clock, Navigation, X, CheckCircle, Phone } from 'lucide-react';
 import { motion } from 'motion/react';
+import { EvidenceViewer } from '../EvidenceViewer';
 
 export function IncidentPopup({ incident, onClose, onAccept }: { incident: any; onClose: () => void; onAccept: (id: string) => void }) {
   const isSolved = incident.status === 'resolved' || incident.status === 'closed';
   const openNav = () => {
-    const { lat, lng } = incident.location || {};
-    if (lat && lng) {
-      navigator.geolocation?.getCurrentPosition(
-        p => window.open(`https://www.google.com/maps/dir/?api=1&origin=${p.coords.latitude},${p.coords.longitude}&destination=${lat},${lng}&travelmode=driving`, '_blank'),
-        () => window.open(`https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}&travelmode=driving`, '_blank')
-      );
-    }
+    const loc = incident.location || {};
+    const lat = loc.lat || loc.latitude || loc.coordinates?.[1] || 15.8497;
+    const lng = loc.lng || loc.longitude || loc.coordinates?.[0] || 74.4977;
+    navigator.geolocation?.getCurrentPosition(
+      p => window.open(`https://www.google.com/maps/dir/?api=1&origin=${p.coords.latitude},${p.coords.longitude}&destination=${lat},${lng}&travelmode=driving`, '_blank'),
+      () => window.open(`https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}&travelmode=driving`, '_blank')
+    );
   };
   const pColor: Record<string, string> = { high: '#EF4444', medium: '#F97316', low: '#22C55E' };
   const color = isSolved ? '#6B7280' : (pColor[incident.priority] || '#F97316');
@@ -35,16 +36,18 @@ export function IncidentPopup({ incident, onClose, onAccept }: { incident: any; 
           )}
           <div className="bg-gray-50 rounded-xl p-3 space-y-2">
             <h3 className="font-bold text-black">{incident.title || incident.type}</h3>
-            {incident.description && <p className="text-sm text-gray-600">{incident.description}</p>}
+            {incident.description && <p className="text-sm text-gray-600 whitespace-pre-line">{incident.description}</p>}
             <div className="flex items-center gap-2 text-sm text-gray-500"><MapPin className="w-4 h-4 text-red-500" />{incident.location?.address || 'Unknown'}</div>
             <div className="flex items-center gap-2 text-sm text-gray-500"><Clock className="w-4 h-4 text-blue-500" />{incident.createdAt ? new Date(incident.createdAt).toLocaleString() : 'Just now'}</div>
             {incident.reportedBy?.name && <p className="text-xs text-gray-400">Reported by: {incident.reportedBy.name}</p>}
           </div>
-          {incident.location?.lat && (
-            <button onClick={openNav} className="w-full py-3 bg-green-500 text-white rounded-xl font-bold text-sm flex items-center justify-center gap-2">
-              <Navigation className="w-5 h-5" /> 🚑 Navigate to Location
-            </button>
-          )}
+
+          {/* Evidence Section */}
+          <EvidenceViewer evidence={incident.evidence} />
+
+          <button onClick={openNav} className="w-full py-3 bg-green-500 text-white rounded-xl font-bold text-sm flex items-center justify-center gap-2">
+            <Navigation className="w-5 h-5" /> 🚑 Navigate to Location
+          </button>
           {!isSolved && (
             <div className="grid grid-cols-2 gap-2">
               <button onClick={() => { onAccept(incident._id); onClose(); }} className="py-2.5 bg-red-500 text-white rounded-xl text-sm font-bold">Accept & Respond</button>
